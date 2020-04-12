@@ -104,18 +104,98 @@ WHERE genre_id = (select genre_id
 
 -- GROUP BY *****
 -- 1
+SELECT COUNT(*), genre.name
+FROM track
+    JOIN genre ON track.genre_id = genre.genre_id
+GROUP BY genre.name;
 -- 2
+SELECT COUNT(*), genre.name
+FROM track
+    JOIN genre ON genre.genre_id = track.genre_id
+WHERE genre.name = 'Pop' OR genre.name = 'Rock'
+GROUP BY genre.name;
 -- 3
+SELECT artist.name, COUNT(*)
+FROM album
+    JOIN artist ON artist.artist_id = album.artist_id
+GROUP BY artist.name;
 
 -- USE DISTINCT *****
 -- 1
+SELECT DISTINCT composer
+FROM track;
 -- 2
+SELECT DISTINCT billing_postal_code
+FROM invoice;
 -- 3
+SELECT DISTINCT company
+FROM customer;
 
 -- DELETE ROWS *****
 -- 1
+DELETE
+FROM practice_delete
+WHERE type = 'bronze';
 -- 2
+DELETE 
+FROM practice_delete
+WHERE type = 'silver';
 -- 3
--- 4
+DELETE
+FROM practice_delete 
+WHERE value = 150;
 
 -- ECOMMERCE SIM *****
+
+CREATE TABLE users
+(
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(30),
+    email VARCHAR(120)
+);
+
+INSERT INTO users
+    (name, email)
+VALUES
+    ('Raxa', 'ImRaxa@outloook.com'),
+    ('Larry', 'ImLarry@AOL.com'),
+    ('Barry', 'ImBarry@Hotmail.com');
+
+CREATE TABLE products
+(
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(120),
+    price DECIMAL
+);
+
+INSERT INTO products
+    (name, price)
+VALUES
+    ('t-shirt', 12.37),
+    ('baseball cap', 8.95),
+    ('sneakers', 23.57);
+
+CREATE TABLE orders
+(
+    cart_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(user_id),
+    product_id INT REFERENCES products(product_id)
+);
+
+INSERT INTO orders
+    (user_id, product_id)
+VALUES
+    (1, 2),
+    (1, 1),
+    (2, 2),
+    (3, 1),
+    (3, 2),
+    (3, 3);
+
+SELECT name, price
+FROM orders
+    JOIN products ON orders.product_id = products.product_id
+WHERE orders.user_id = 1;
+
+SELECT *
+FROM orders;
