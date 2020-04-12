@@ -199,3 +199,13 @@ WHERE orders.user_id = 1;
 
 SELECT *
 FROM orders;
+
+SELECT SUM(price)
+FROM orders
+    JOIN products ON orders.product_id = products.product_id
+WHERE orders.user_id = 1;
+
+SELECT *
+FROM orders
+    JOIN products ON orders.product_id = products.product_id
+WHERE orders.user_id = 1;
